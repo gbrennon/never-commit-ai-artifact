@@ -1,0 +1,12 @@
+#!/bin/sh
+
+blocked_files=$(git diff --cached --name-only --diff-filter=ACMR | awk '
+  /^docs\/superpowers\// || /^\.superpowers\// { print }
+')
+
+if [ -n "$blocked_files" ]; then
+  printf '%s\n' 'Commit blocked: AI session artifacts are not allowed:' >&2
+  printf '  %s\n' "$blocked_files" >&2
+  printf '%s\n' 'Remove them from the index before committing.' >&2
+  exit 1
+fi

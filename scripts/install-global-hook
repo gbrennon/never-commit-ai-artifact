@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -eu
+
+script_directory=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+hook_directory=${XDG_CONFIG_HOME:-$HOME/.config}/git/hooks
+hook_path=$hook_directory/pre-commit
+
+mkdir -p "$hook_directory"
+install -m 755 "$script_directory/../hooks/pre-commit" "$hook_path"
+git config --global core.hooksPath "$hook_directory"
+printf 'Installed global hook at %s\n' "$hook_path"
